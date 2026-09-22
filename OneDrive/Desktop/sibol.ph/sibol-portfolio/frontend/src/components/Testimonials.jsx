@@ -1,68 +1,50 @@
-const testimonials = [
+const features = [
   {
-    name: 'Maria Santos',
-    role: 'CEO, TechStart PH',
-    content: 'Sibol.ph transformed our outdated website into a modern, fast platform. Our conversion rate increased by 40% within the first month!',
-    rating: 5,
+    number: '01',
+    title: 'Business-Focused',
+    description: 'We focus on understanding your business before building the solution.',
   },
   {
-    name: 'Gabriel Vicente',
-    role: 'Founder, ShopLocal',
-    content: 'The e-commerce platform they built handles thousands of orders daily without any issues. Their support team is always responsive and professional.',
-    rating: 5,
+    number: '02',
+    title: 'Modern Technology',
+    description: 'We use modern technologies to create fast, responsive, and maintainable websites and applications.',
   },
   {
-    name: 'Sarah Garcia',
-    role: 'Marketing Director, GrowthCo',
-    content: 'Professional, skilled, and delivered ahead of schedule. The attention to detail in both design and code quality was impressive.',
-    rating: 5,
+    number: '03',
+    title: 'Growing With You',
+    description: "We're building long-term partnerships, not just delivering a website and disappearing.",
   },
 ]
 
-function StarIcon() {
-  return (
-    <svg className="w-3.5 h-3.5 text-green-500 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
-      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-    </svg>
-  )
-}
-
 export default function Testimonials() {
   return (
-    <section id="testimonials" className="py-24 relative z-0 overflow-hidden">
+    <section id="why-us" className="py-24 relative z-0 overflow-hidden">
       <div className="max-w-[1000px] mx-auto px-6 text-center relative z-10">
-        <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-green-600 dark:text-green-400">
-          Testimonials
+        <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-blue-400">
+          Why Work With Us
         </span>
         <h2 className="mt-3 text-[32px] sm:text-[36px] font-bold text-[#111] dark:text-[#f5f5f7] tracking-tight">
-          What Clients Say
+          Built With Purpose
         </h2>
-        <p className="mt-3 text-[14px] text-[#888] dark:text-[#666] max-w-[400px] mx-auto">
-          Don't just take our word for it
+        <p className="mt-3 text-[14px] text-[#888] dark:text-[#666] max-w-[440px] mx-auto">
+          We're a growing development team focused on creating practical, modern, and reliable digital solutions for businesses.
         </p>
 
-        <div className="mt-14 grid md:grid-cols-3 gap-4 text-left">
-          {testimonials.map((testimonial) => (
+        <div className="mt-14 grid md:grid-cols-3 gap-4 text-left group/features">
+          {features.map((feature) => (
             <div
-              key={testimonial.name}
-              className="p-6 rounded-2xl border border-white/60 dark:border-white/10 bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl"
+              key={feature.number}
+              className="p-6 rounded-2xl border border-white/60 dark:border-white/10 bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl transition-all duration-300 ease-out md:group-hover/features:opacity-70 md:group-hover/features:scale-[0.98] md:hover:!opacity-100 md:hover:!scale-[1.03] md:hover:-translate-y-1 hover:border-blue-500/50 hover:shadow-[0_0_0_1px_rgba(59,130,246,0.2),0_0_32px_rgba(59,130,246,0.18)] md:hover:shadow-[0_0_0_1px_rgba(59,130,246,0.25),0_0_40px_rgba(59,130,246,0.22)]"
             >
-              <div className="flex gap-0.5 mb-4">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <StarIcon key={i} />
-                ))}
+              <div className="text-[12px] font-semibold text-blue-400 tracking-wider">
+                {feature.number}
               </div>
-              <p className="text-[13px] text-[#777] dark:text-[#999] leading-relaxed mb-6">
-                "{testimonial.content}"
+              <h3 className="mt-3 text-[16px] font-semibold text-[#111] dark:text-[#f5f5f7]">
+                {feature.title}
+              </h3>
+              <p className="mt-2 text-[13px] text-[#777] dark:text-[#999] leading-relaxed">
+                {feature.description}
               </p>
-              <div className="border-t border-green-100 dark:border-[#222] pt-4">
-                <div className="text-[13px] font-medium text-[#111] dark:text-[#f5f5f7]">
-                  {testimonial.name}
-                </div>
-                <div className="text-[12px] text-[#999] dark:text-[#666] mt-0.5">
-                  {testimonial.role}
-                </div>
-              </div>
             </div>
           ))}
         </div>

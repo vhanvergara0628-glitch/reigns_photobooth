@@ -33,12 +33,12 @@ export default function Contact() {
   }
 
   const inputClass =
-    'w-full bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/60 dark:border-white/10 rounded-xl px-4 py-3 text-[13px] text-[#111] dark:text-[#f5f5f7] placeholder-[#ccc] dark:placeholder-[#666] focus:outline-none focus:border-green-400 dark:focus:border-green-500 focus:ring-2 focus:ring-green-500/10 transition-all duration-150'
+    'w-full bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/60 dark:border-white/10 rounded-xl px-4 py-3 text-[13px] text-[#111] dark:text-[#f5f5f7] placeholder-[#ccc] dark:placeholder-[#666] focus:outline-none focus:border-blue-500 dark:focus:border-blue-500 focus:ring-2 focus:ring-blue-500/15 transition-all duration-150'
 
   return (
     <section id="contact" className="py-24 relative z-0">
       <div className="max-w-[1000px] mx-auto px-6 text-center relative z-10">
-        <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-green-600 dark:text-green-400">
+        <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-blue-400">
           Contact us
         </span>
         <h2 className="mt-3 text-[32px] sm:text-[36px] font-bold text-[#111] dark:text-[#f5f5f7] tracking-tight">
@@ -89,27 +89,29 @@ export default function Contact() {
               </div>
 
               {status === 'success' && (
-                <p className="text-[13px] text-green-600 dark:text-green-400">Message sent! We'll get back to you soon.</p>
+                <p className="text-[13px] text-blue-400">Message sent! We'll get back to you soon.</p>
               )}
               {status === 'error' && (
                 <p className="text-[13px] text-red-500">Something went wrong. Please try again.</p>
               )}
 
-              <button
-                type="submit"
-                disabled={loading}
-                data-cursor="pointer"
-                className="bg-green-500 hover:bg-green-600 disabled:opacity-50 text-white text-[13px] font-medium px-7 py-3 rounded-full transition-all duration-150 shadow-[0_2px_12px_rgba(34,197,94,0.25)] hover:shadow-[0_4px_20px_rgba(34,197,94,0.35)]"
-              >
-                {loading ? 'Sending...' : 'Send Message'}
-              </button>
+              <div className="flex justify-center sm:justify-start">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  data-cursor="pointer"
+                  className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-[13px] font-medium px-7 py-3 rounded-full transition-all duration-150 shadow-[0_2px_12px_rgba(59,130,246,0.35)] hover:shadow-[0_4px_20px_rgba(59,130,246,0.5)]"
+                >
+                  {loading ? 'Sending...' : 'Send Message'}
+                </button>
+              </div>
             </form>
           </div>
 
           <div className="flex flex-col justify-center">
             <div className="bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl border border-white/60 dark:border-white/10 rounded-2xl p-8 text-center">
-              <div className="w-12 h-12 bg-green-50 dark:bg-green-950/30 rounded-full flex items-center justify-center mx-auto mb-5 border border-green-100 dark:border-green-900/30">
-                <svg className="w-5 h-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+              <div className="w-12 h-12 bg-blue-950/30 dark:bg-blue-950/30 rounded-full flex items-center justify-center mx-auto mb-5 border border-blue-900/40 dark:border-blue-900/40">
+                <svg className="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                 </svg>
               </div>
@@ -124,7 +126,7 @@ export default function Contact() {
                 target="_blank"
                 rel="noopener noreferrer"
                 data-cursor="pointer"
-                className="inline-block bg-green-500 hover:bg-green-600 text-white text-[13px] font-medium px-7 py-3 rounded-full transition-all duration-150 shadow-[0_2px_12px_rgba(34,197,94,0.25)] hover:shadow-[0_4px_20px_rgba(34,197,94,0.35)]"
+                className="inline-block bg-blue-600 hover:bg-blue-500 text-white text-[13px] font-medium px-7 py-3 rounded-full transition-all duration-150 shadow-[0_2px_12px_rgba(59,130,246,0.35)] hover:shadow-[0_4px_20px_rgba(59,130,246,0.5)]"
               >
                 Schedule on Calendly
               </a>

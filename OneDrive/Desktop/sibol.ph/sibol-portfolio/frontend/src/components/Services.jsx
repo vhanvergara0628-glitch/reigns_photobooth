@@ -1,166 +1,312 @@
-import { useState, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
+const SCROLL_UNIT = 190
+const FAN = 6
+const FAN_GAP = 2.2
+const LEAVE = 88
+const DRIFT = 22
+const ROT = 1.2
+
+const smooth = (t) => t * t * (3 - 2 * t)
+const clamp01 = (v) => (v < 0 ? 0 : v > 1 ? 1 : v)
+
+const category = 'Web Development'
 
 const services = [
   {
-    title: 'Web Design',
-    description: 'Beautiful, modern designs that capture your brand identity and engage your audience.',
+    title: 'Business Landing Pages',
+    summary: 'Professional landing pages designed to showcase your business.',
+    details: [
+      'Custom-built landing pages',
+      'Responsive design',
+      'Business-focused layouts',
+      'Contact/inquiry sections',
+      'Basic SEO',
+    ],
     icon: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="3" y="3" width="18" height="14" rx="3" />
+        <rect x="3" y="4" width="18" height="16" rx="2" />
         <path d="M3 9h18" />
-        <path d="M9 20h6" />
-        <path d="M12 17v3" />
+        <rect x="7" y="17" width="10" height="3" rx="1.5" />
       </svg>
     ),
   },
   {
-    title: 'Full-Stack Development',
-    description: 'Robust applications built with modern technologies like React, Node.js, and PostgreSQL.',
+    title: 'Custom Websites',
+    summary: 'Custom-built, fully responsive websites tailored to your brand.',
+    details: [
+      'Custom UI/UX design',
+      'Responsive website development',
+      "Design based on the client's branding",
+      'Business-focused sections',
+      'Contact/inquiry functionality',
+    ],
     icon: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M8 6l-4 6 4 6" />
-        <path d="M16 6l4 6-4 6" />
-        <path d="M14 4l-4 16" />
+        <rect x="3" y="4" width="18" height="13" rx="2" />
+        <path d="M8 21h8" />
+        <path d="M12 17v4" />
+        <path d="M9 9l-2 2 2 2" />
+        <path d="M15 9l2 2-2 2" />
       </svg>
     ),
   },
   {
-    title: 'E-Commerce',
-    description: 'Custom online stores with secure payment processing and inventory management.',
+    title: 'Responsive Web Design',
+    summary: 'Interfaces that adapt seamlessly across every device.',
+    details: [
+      'Mobile-friendly layouts',
+      'Tablet optimization',
+      'Desktop optimization',
+      'Cross-device compatibility',
+      'Clean and accessible interfaces',
+    ],
     icon: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-        <path d="M3 6h18" />
-        <path d="M16 10a4 4 0 01-8 0" />
+        <rect x="2" y="4" width="13" height="16" rx="2" />
+        <path d="M8 18h.01" />
+        <path d="M15 8h5a2 2 0 012 2v8a2 2 0 01-2 2h-5" />
       </svg>
     ),
   },
   {
-    title: 'SEO & Performance',
-    description: 'Optimize your site for search engines and ensure lightning-fast load times.',
+    title: 'UI/UX Design',
+    summary: 'Intuitive, user-centered design that keeps visitors engaged.',
+    details: [
+      'Custom interface design',
+      'User experience planning',
+      'Wireframes and prototypes',
+      'Brand-aligned visual design',
+      'User-focused interactions',
+    ],
     icon: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+        <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z" />
       </svg>
     ),
   },
   {
-    title: 'Mobile Apps',
-    description: 'Cross-platform mobile applications using React Native for iOS and Android.',
+    title: 'Contact & Inquiry Systems',
+    summary: 'Forms and systems that capture leads and inquiries.',
+    details: [
+      'Contact forms',
+      'Inquiry collection',
+      'Lead capture',
+      'Email/notification integration',
+      'Business inquiry management',
+    ],
     icon: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="5" y="2" width="14" height="20" rx="3" />
-        <path d="M12 18h.01" />
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+        <path d="M22 7l-10 6L2 7" />
       </svg>
     ),
   },
   {
-    title: 'Maintenance & Support',
-    description: 'Ongoing support, updates, and monitoring to keep your application running smoothly.',
+    title: 'SEO Optimization',
+    summary: 'Search-friendly structure that helps customers find you.',
+    details: [
+      'Basic on-page SEO',
+      'Search-friendly structure',
+      'Metadata optimization',
+      'Semantic HTML',
+      'Performance-focused implementation',
+    ],
     icon: (
       <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="3" />
-        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+        <circle cx="11" cy="11" r="7" />
+        <path d="M21 21l-4.35-4.35" />
+        <path d="M8 13l2.5-2.5 2 2L16 9" />
+      </svg>
+    ),
+  },
+  {
+    title: 'AI Chatbot Integration',
+    summary: 'AI assistants that engage visitors and qualify leads.',
+    details: [
+      'AI-powered customer assistance',
+      'Automated responses',
+      'Frequently asked questions',
+      'Lead qualification',
+      'Website chatbot integration',
+    ],
+    icon: (
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="4" y="7" width="16" height="11" rx="3" />
+        <path d="M12 7V4" />
+        <path d="M9 2h6" />
+        <path d="M8 13h.01" />
+        <path d="M12 13h.01" />
+        <path d="M16 13h.01" />
       </svg>
     ),
   },
 ]
 
 export default function Services() {
-  const scrollRef = useRef(null)
-  const [canScrollLeft, setCanScrollLeft] = useState(false)
-  const [canScrollRight, setCanScrollRight] = useState(true)
+  const deckRef = useRef(null)
+  const cardRefs = useRef([])
+  const [openIndex, setOpenIndex] = useState(null)
 
-  const checkScroll = () => {
-    const el = scrollRef.current
-    if (!el) return
-    setCanScrollLeft(el.scrollLeft > 10)
-    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10)
-  }
+  useEffect(() => {
+    const deck = deckRef.current
+    if (!deck) return
 
-  const scroll = (dir) => {
-    const el = scrollRef.current
-    if (!el) return
-    const cardWidth = el.querySelector('[data-card]')?.offsetWidth || 300
-    el.scrollBy({ left: dir * (cardWidth + 16), behavior: 'smooth' })
-  }
+    const cardCount = services.length
+    let raf = null
+
+    const update = () => {
+      raf = null
+
+      const rect = deck.getBoundingClientRect()
+      const viewport = window.innerHeight
+      const height = Math.max(1, rect.height - viewport)
+      const progress = clamp01(-rect.top / height)
+      const s = progress * cardCount
+
+      cardRefs.current.forEach((card, i) => {
+        if (!card) return
+
+        const d = i - s
+
+        let y
+        if (d <= -1) {
+          y = -LEAVE - (-d - 1) * DRIFT
+        } else if (d < 0) {
+          y = -LEAVE * smooth(-d)
+        } else if (d < 1) {
+          y = FAN * smooth(d)
+        } else {
+          y = FAN + FAN_GAP * (d - 1)
+        }
+
+        let scale
+        if (d >= 1) {
+          scale = Math.max(0.86, 1 - 0.03 * (d - 1))
+        } else if (d <= -1) {
+          scale = 0.9
+        } else {
+          scale = 1
+        }
+
+        const rot =
+          d >= 1
+            ? ((i % 2 ? 1 : -1) * ROT) * Math.min(1, (d - 1) * 0.5)
+            : d <= -1
+              ? ((i % 2 ? 1 : -1) * ROT) * 0.6
+              : 0
+
+        const depth = Math.max(0, 1 - Math.abs(d))
+        const zIndex = 10 + Math.round(depth * 50)
+        const isActive = d >= 0 && d < 1
+
+        card.style.transform = `translate3d(0, ${y}vh, 0) translate(-50%, -50%) scale(${scale}) rotate(${rot}deg)`
+        card.style.zIndex = zIndex
+        card.style.pointerEvents = isActive ? 'auto' : 'none'
+      })
+
+      raf = requestAnimationFrame(update)
+    }
+
+    raf = requestAnimationFrame(update)
+    return () => cancelAnimationFrame(raf)
+  }, [])
 
   return (
-    <section id="services" className="py-24 relative z-0">
-      <div className="max-w-[1000px] mx-auto px-6 relative z-10">
-        <div className="text-center mb-12">
-          <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-green-600 dark:text-green-400">
-            What we do
-          </span>
-          <h2 className="mt-3 text-[32px] sm:text-[36px] font-bold text-[#111] dark:text-[#f5f5f7] tracking-tight">
-            Our Services
-          </h2>
-          <p className="mt-3 text-[14px] text-[#888] dark:text-[#666] max-w-[400px] mx-auto">
-            End-to-end solutions tailored for your digital growth
-          </p>
-        </div>
+    <section id="services">
+      <div className="max-w-[1000px] mx-auto px-6 text-center pt-24 pb-10 relative z-10">
+        <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-blue-400">
+          What We Offer
+        </span>
+        <h2 className="mt-3 text-[32px] sm:text-[36px] font-bold text-[#111] dark:text-[#f5f5f7] tracking-tight">
+          Our Services
+        </h2>
+        <p className="mt-3 text-[14px] text-[#888] dark:text-[#666] max-w-[400px] mx-auto">
+          End-to-end solutions tailored for your digital growth
+        </p>
+      </div>
 
-        <div className="relative">
-          <button
-            onClick={() => scroll(-1)}
-            data-cursor="pointer"
-            disabled={!canScrollLeft}
-            className={`absolute -left-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white dark:bg-[#1a1a1a] border border-green-100 dark:border-[#333] shadow-md flex items-center justify-center transition-all duration-150 ${
-              canScrollLeft ? 'opacity-100 hover:shadow-lg' : 'opacity-0 pointer-events-none'
-            }`}
-          >
-            <svg className="w-4 h-4 text-[#111] dark:text-[#f5f5f7]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+      <div ref={deckRef} className="relative" style={{ height: `${services.length * SCROLL_UNIT}vh` }}>
+        <div className="sticky top-0 h-screen overflow-hidden">
+          <div className="relative h-full w-full">
+            {services.map((service, i) => {
+              const isOpen = openIndex === i
+              return (
+                <div
+                  key={service.title}
+                  ref={(el) => {
+                        cardRefs.current[i] = el
+                      }}
+                  data-cursor="pointer"
+                  style={{ transform: 'translate(-50%, -50%)' }}
+                  className="absolute left-1/2 top-1/2 w-[min(calc(100vw-2.5rem),820px)] will-change-transform"
+                >
+                  <div className="p-5 sm:p-7 md:p-8 rounded-2xl border border-white/60 dark:border-white/10 bg-white/90 dark:bg-[#141419]/95">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center text-blue-400 bg-blue-900 shadow-[0_0_24px_rgba(59,130,246,0.3)] shrink-0">
+                        {service.icon}
+                      </div>
+                      <div>
+                        <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-400">
+                          {category}
+                        </div>
+                        <h3 className="mt-0.5 text-[18px] sm:text-[20px] font-semibold text-[#111] dark:text-[#f5f5f7] tracking-tight">
+                          {service.title}
+                        </h3>
+                      </div>
+                    </div>
 
-          <div
-            ref={scrollRef}
-            onScroll={checkScroll}
-            className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-2 -mx-2 px-2"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {services.map((service) => (
-              <div
-                key={service.title}
-                data-card
-                data-cursor="pointer"
-                className="group flex-shrink-0 w-[280px] snap-start p-6 rounded-2xl border border-white/60 dark:border-white/10 bg-white/50 dark:bg-white/[0.06] backdrop-blur-xl hover:border-green-300/50 dark:hover:border-green-500/30 hover:shadow-[0_8px_32px_rgba(34,197,94,0.12)] dark:hover:shadow-[0_8px_32px_rgba(0,0,0,0.4)] transition-all duration-200"
-              >
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center text-green-600 dark:text-green-400 bg-green-100 dark:bg-green-950/40 mb-4 group-hover:bg-green-200 dark:group-hover:bg-green-900/50 transition-colors duration-200">
-                  {service.icon}
+                    <p className="mt-3 text-[14px] text-[#888] dark:text-[#888] leading-relaxed">
+                      {service.summary}
+                    </p>
+
+                    <div className="mt-4 flex items-center justify-between gap-4 sm:hidden">
+                      <button
+                        type="button"
+                        data-cursor="pointer"
+                        onClick={() => setOpenIndex(isOpen ? null : i)}
+                        className="inline-flex items-center gap-1.5 text-[13px] font-medium text-blue-400 active:text-blue-300 transition-colors duration-200"
+                      >
+                        {isOpen ? 'Hide Details ↑' : 'See Details →'}
+                      </button>
+                    </div>
+
+                    <div
+                      className={`grid overflow-hidden transition-[grid-template-rows] duration-300 ease-in-out ${
+                        isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                      } sm:grid-rows-[1fr]`}
+                    >
+                      <div className="overflow-hidden">
+                        <div className="sm:hidden border-t border-blue-950/20 dark:border-blue-400/10 mt-4 pt-4">
+                          <ul className="space-y-2">
+                            {service.details.map((detail) => (
+                              <li key={detail} className="flex items-start gap-2 text-[13px] text-[#888] dark:text-[#aaa]">
+                                <svg className="w-4 h-4 mt-0.5 text-blue-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                {detail}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        <div className="hidden sm:block border-t border-blue-950/20 dark:border-blue-400/10 mt-5 pt-5 lg:grid lg:grid-cols-2 gap-x-8 gap-y-2.5">
+                          {service.details.map((detail) => (
+                            <div key={detail} className="flex items-start gap-2 text-[13px] text-[#888] dark:text-[#aaa]">
+                              <svg className="w-4 h-4 mt-0.5 text-blue-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                              </svg>
+                              {detail}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-[14px] font-semibold text-[#111] dark:text-[#f5f5f7] mb-1.5">
-                  {service.title}
-                </h3>
-                <p className="text-[13px] text-[#888] dark:text-[#666] leading-relaxed">
-                  {service.description}
-                </p>
-              </div>
-            ))}
+              )
+            })}
           </div>
-
-          <button
-            onClick={() => scroll(1)}
-            data-cursor="pointer"
-            disabled={!canScrollRight}
-            className={`absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white dark:bg-[#1a1a1a] border border-green-100 dark:border-[#333] shadow-md flex items-center justify-center transition-all duration-150 ${
-              canScrollRight ? 'opacity-100 hover:shadow-lg' : 'opacity-0 pointer-events-none'
-            }`}
-          >
-            <svg className="w-4 h-4 text-[#111] dark:text-[#f5f5f7]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
-
-        <div className="flex justify-center gap-1.5 mt-8">
-          {services.map((_, i) => (
-            <div
-              key={i}
-              className="w-1.5 h-1.5 rounded-full bg-green-200 dark:bg-[#333]"
-            />
-          ))}
         </div>
       </div>
     </section>

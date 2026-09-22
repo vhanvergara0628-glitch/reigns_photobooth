@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react'
+import AtomLogo from './AtomLogo'
 
 const WELCOME_MESSAGE =
-  "Hi! I'm Sibol, your virtual assistant. Ask me anything about our services, and I'll help you out!"
+  "Hi! I'm N8X, your virtual assistant. Ask me anything about our services, and I'll help you out!"
 
 const QUICK_QUESTIONS = [
   'What services do you offer?',
@@ -14,12 +15,8 @@ const NAME_REGEX = /(?:my name is|i am|i'm)\s+([A-Za-z][A-Za-z .'-]{1,40})/i
 
 function BotAvatar() {
   return (
-    <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center shrink-0">
-      <svg className="w-3.5 h-3.5 text-green-400" viewBox="0 0 24 24" fill="none">
-        <path d="M12 22V12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-        <path d="M12 14C12 14 8 13 6 9C4 5 8 2 12 8" fill="currentColor" opacity="0.7" />
-        <path d="M12 10C12 10 16 8 18 4C20 0 16 1 12 6" fill="currentColor" opacity="0.9" />
-      </svg>
+    <div className="w-6 h-6 rounded-full bg-blue-500/25 flex items-center justify-center shrink-0">
+      <AtomLogo className="w-3.5 h-3.5 text-blue-400 shrink-0" />
     </div>
   )
 }
@@ -30,7 +27,7 @@ function TypingDots() {
       {[0, 1, 2].map((i) => (
         <span
           key={i}
-          className="w-1.5 h-1.5 rounded-full bg-green-400 animate-bounce"
+          className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-bounce"
           style={{ animationDelay: `${i * 0.15}s` }}
         />
       ))}
@@ -160,7 +157,7 @@ export default function ChatWidget() {
   }
 
   const inputClass =
-    'flex-1 bg-white/60 dark:bg-white/[0.06] backdrop-blur-xl border border-white/60 dark:border-white/10 rounded-full px-4 py-2.5 text-[13px] text-[#111] dark:text-[#f5f5f7] placeholder-[#999] dark:placeholder-[#666] focus:outline-none focus:border-green-400 dark:focus:border-green-500 transition-all duration-150'
+    'flex-1 bg-white/60 dark:bg-white/[0.06] backdrop-blur-xl border border-white/60 dark:border-white/10 rounded-full px-4 py-2.5 text-[13px] text-[#111] dark:text-[#f5f5f7] placeholder-[#999] dark:placeholder-[#666] focus:outline-none focus:border-blue-500 dark:focus:border-blue-500 transition-all duration-150'
 
   return (
     <>
@@ -169,7 +166,7 @@ export default function ChatWidget() {
           <button
             onClick={() => setIsOpen(true)}
             data-cursor="pointer"
-            className="w-14 h-14 rounded-full bg-green-500 hover:bg-green-600 text-white shadow-[0_4px_20px_rgba(34,197,94,0.4)] hover:shadow-[0_6px_28px_rgba(34,197,94,0.55)] flex items-center justify-center transition-all duration-200"
+            className="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-500 text-white shadow-[0_4px_20px_rgba(59,130,246,0.45)] hover:shadow-[0_6px_28px_rgba(59,130,246,0.6)] flex items-center justify-center transition-all duration-200"
             aria-label="Open chat"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
@@ -184,9 +181,9 @@ export default function ChatWidget() {
           <div className="flex items-center gap-3 px-4 py-3.5 border-b border-white/10 bg-white/5 dark:bg-white/[0.04]">
             <BotAvatar />
             <div className="flex-1">
-              <div className="text-[13px] font-semibold text-[#f5f5f7]">Sibol Assistant</div>
+              <div className="text-[13px] font-semibold text-[#f5f5f7]">N8X Assistant</div>
               <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
                 <span className="text-[11px] text-[#aaa]">Online — replies instantly</span>
               </div>
             </div>
@@ -213,7 +210,7 @@ export default function ChatWidget() {
                 </div>
               ) : (
                 <div key={i} className="flex justify-end">
-                  <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-green-500 text-white px-3.5 py-2.5 text-[13px] leading-relaxed shadow-[0_2px_12px_rgba(34,197,94,0.25)]">
+                  <div className="max-w-[80%] rounded-2xl rounded-br-sm bg-blue-600 text-white px-3.5 py-2.5 text-[13px] leading-relaxed shadow-[0_2px_12px_rgba(59,130,246,0.35)]">
                     {msg.content}
                   </div>
                 </div>
@@ -236,7 +233,7 @@ export default function ChatWidget() {
                     key={q}
                     onClick={() => send(q)}
                     data-cursor="pointer"
-                    className="text-[11px] px-3 py-1.5 rounded-full border border-white/15 text-[#ccc] hover:text-[#f5f5f7] hover:border-green-400/60 hover:bg-green-500/10 transition-all duration-150"
+                    className="text-[11px] px-3 py-1.5 rounded-full border border-white/15 text-[#ccc] hover:text-[#f5f5f7] hover:border-blue-500/60 hover:bg-blue-500/10 transition-all duration-150"
                   >
                     {q}
                   </button>
@@ -261,7 +258,7 @@ export default function ChatWidget() {
               type="submit"
               disabled={typing || !input.trim()}
               data-cursor="pointer"
-              className="w-10 h-10 shrink-0 rounded-full bg-green-500 hover:bg-green-600 disabled:opacity-40 text-white flex items-center justify-center transition-all duration-150 shadow-[0_2px_12px_rgba(34,197,94,0.3)]"
+              className="w-10 h-10 shrink-0 rounded-full bg-blue-600 hover:bg-blue-500 disabled:opacity-40 text-white flex items-center justify-center transition-all duration-150 shadow-[0_2px_12px_rgba(59,130,246,0.35)]"
               aria-label="Send message"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
